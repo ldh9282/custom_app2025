@@ -1,8 +1,7 @@
 package com.custom.app2025.sample.entity;
 
 import com.custom.app2025.shared.model.CustomEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.custom.app2025.shared.utils.StringUtils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,6 +43,39 @@ public class SampleUserDtl extends CustomEntity {
 	public SampleUserDtl() {
 	
 	}
+
+	public void setSampleUserSno(Long sampleUserSno) {
+		if (sampleUserSno > 0) {
+			this.sampleUserSno = sampleUserSno;
+		}
+	}
+	
+	/**
+	 * <pre>
+	 * 메서드명: setSampleUserBaseAddr
+	 * 설명: 빈값 체크후 세터
+	 * </pre>
+	 * @param sampleUserBaseAddr
+	 */
+	public void setSampleUserBaseAddr(String sampleUserBaseAddr) {
+		if (!StringUtils.isNVL(sampleUserBaseAddr)) {
+			this.sampleUserBaseAddr = sampleUserBaseAddr;
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 메서드명: setSampleUserDtlAddr
+	 * 설명: 빈값 체크후 세터
+	 * </pre>
+	 * @param sampleUserDtlAddr
+	 */
+	public void setSampleUserDtlAddr(String sampleUserDtlAddr) {
+		if (StringUtils.isNVL(sampleUserDtlAddr)) {
+			this.sampleUserDtlAddr = sampleUserDtlAddr;
+		}
+	}
+	
 	
 
 }

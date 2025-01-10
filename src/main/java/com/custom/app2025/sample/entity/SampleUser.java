@@ -2,6 +2,7 @@ package com.custom.app2025.sample.entity;
 
 import com.custom.app2025.shared.converter.CustomConverterS2I;
 import com.custom.app2025.shared.model.CustomEntity;
+import com.custom.app2025.shared.utils.StringUtils;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -49,6 +50,46 @@ public class SampleUser extends CustomEntity {
 	public SampleUser() {
 		
 	}
+
+	/**
+	 * <pre>
+	 * 메서드명: setSampleUserName
+	 * 설명: 빈값 체크후 세터
+	 * </pre>
+	 * @param sampleUserName
+	 */
+	public void setSampleUserName(String sampleUserName) {
+		if (!StringUtils.isNVL(sampleUserName)) {
+			this.sampleUserName = sampleUserName;
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 메서드명: setSampleUserAge
+	 * 설명: 빈값 체크후 세터
+	 * </pre>
+	 * @param sampleUserAge
+	 */
+	public void setSampleUserAge(String sampleUserAge) {
+		if (!StringUtils.isNVL(sampleUserAge)) {
+			this.sampleUserAge = sampleUserAge;
+		}
+	}
+
+	/**
+	 * <pre>
+	 * 메서드명: setSampleUserEmail
+	 * 설명: 빈값 체크후 세터
+	 * </pre>
+	 * @param sampleUserEmail
+	 */
+	public void setSampleUserEmail(String sampleUserEmail) {
+		if (!StringUtils.isNVL(sampleUserEmail)) {
+			this.sampleUserEmail = sampleUserEmail;
+		}
+	}
+
 
 
 }
