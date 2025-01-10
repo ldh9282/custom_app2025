@@ -62,7 +62,7 @@ public class SampleService {
 			resultMap.put("sampleUser", sampleUser);
 			
 		} catch (Exception e) {
-			throw new CustomException(CustomExceptionCode.ERR521, new String[] { "샘플유저" });
+			throw new CustomException(CustomExceptionCode.ERR521, new String[] { "샘플유저" }, e);
 		}
 		
 		return resultMap;
@@ -95,7 +95,7 @@ public class SampleService {
 			resultMap.put("sampleUser", sampleUser);
 
 		} catch (Exception e) {
-			throw new CustomException(CustomExceptionCode.ERR511, new String[] { "샘플유저" });
+			throw new CustomException(CustomExceptionCode.ERR511, new String[] { "샘플유저" }, e);
 		}
 		return resultMap;
 	}
@@ -143,7 +143,7 @@ public class SampleService {
 			resultMap.put("sampleUser", sampleUser);
 
 		} catch (Exception e) {
-			throw new CustomException(CustomExceptionCode.ERR531, new String[] { "샘플유저" });
+			throw new CustomException(CustomExceptionCode.ERR531, new String[] { "샘플유저" }, e);
 		}
 		return resultMap;
 	}
@@ -174,7 +174,7 @@ public class SampleService {
 			resultMap.put("cnt", cnt);
 
 		} catch (Exception e) {
-			throw new CustomException(CustomExceptionCode.ERR541, new String[] { "샘플유저" });
+			throw new CustomException(CustomExceptionCode.ERR541, new String[] { "샘플유저" }, e);
 		}
 		return resultMap;
 	}
