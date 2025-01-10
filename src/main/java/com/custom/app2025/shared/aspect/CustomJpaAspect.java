@@ -17,7 +17,9 @@ import lombok.extern.log4j.Log4j2;
 @Component @Log4j2
 public class CustomJpaAspect {
 
-	@Before("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))")
+	@Before("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))"
+			+ " or " + "execution(* com.querydsl.jpa.impl.JPAQueryFactory.*(..))"
+			)
     public void logBefore(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
