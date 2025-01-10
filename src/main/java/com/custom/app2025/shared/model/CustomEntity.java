@@ -11,6 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 
 /**
@@ -23,6 +24,9 @@ import lombok.Getter;
 @Getter
 public abstract class CustomEntity {
 	
+	@Transient
+	private String sysActor;
+	
 	@Column(name = "시스템생성자", nullable = true, updatable = false)
 	private String sysCreator;
 	
@@ -34,17 +38,17 @@ public abstract class CustomEntity {
 
     @Column(name = "시스템수정일", nullable = false)
     private LocalDateTime sysModifiedAt;
+    
 
     
     @PrePersist
     protected void onCreate() {
-    	if (StringUtils.isNVL(sysCreator)) {
+    	if (StringUtils.isNVL(this.sysActor)) {
     		this.sysCreator = CmmnConstant.SYSTEM;
     		this.sysModifier = CmmnConstant.SYSTEM;
     	} else {
-    		if (StringUtils.isNVL(sysModifier)) {
-    			this.sysModifier = this.sysCreator;
-    		}
+    		this.sysCreator = this.sysActor;
+    		this.sysModifier = this.sysActor;
     	}
         this.sysCreatedAt = LocalDateTime.now();
         this.sysModifiedAt = LocalDateTime.now();
@@ -52,20 +56,25 @@ public abstract class CustomEntity {
 
     @PreUpdate
     protected void onUpdate() {
-    	if (StringUtils.isNVL(sysModifier)) {
+    	if (StringUtils.isNVL(this.sysActor)) {
     		this.sysModifier = CmmnConstant.SYSTEM;
-    	}
+    	} else {
+    		this.sysModifier = this.sysActor;
+		}
         this.sysModifiedAt = LocalDateTime.now();
     }
     
-	public void setSysCreator(String sysCreator) {
-		this.sysCreator = sysCreator;
+    /**
+     * <pre>
+     * 메서드명: setSysActor
+     * 설명: sysCreator 및 sysModifier 적용값
+     * </pre>
+     * @param sysActor
+     */
+	public void setSysActor(String sysActor) {
+		this.sysActor = sysActor;
 	}
 
-	public void setSysModifier(String sysModifier) {
-		this.sysModifier = sysModifier;
-	}
-    
     
 	@Override
 	public String toString() {
@@ -73,7 +82,7 @@ public abstract class CustomEntity {
 	}
 	
 	public CustomMap toCustomMap() {
-		return new CustomMap(MapUtils.objectToMap(this));
+		return new CustomMap(MapUtils.objectToMap2(this));
 	}
 	
 	public String getSimpleSysCreatedAt() {

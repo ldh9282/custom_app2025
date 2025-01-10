@@ -43,7 +43,7 @@ public class SampleService {
 					.sampleUserAge(params.getString("sampleUserAge"))
 					.build();
 			
-			sampleUser.setSysCreator(params.getString("sysCreator"));
+			sampleUser.setSysActor(params.getString("sysActor"));
 			
 			
 			SampleUser theSampleUser = sampleUserRepository.save(sampleUser);
@@ -54,7 +54,7 @@ public class SampleService {
 					.sampleUserDtlAddr(params.getString("sampleUserDtlAddr"))
 					.build();
 
-			sampleUserDtl.setSysCreator(params.getString("sysCreator"));
+			sampleUserDtl.setSysActor(params.getString("sysActor"));
 			SampleUserDtl theSampleUserDtl = sampleUserDtlRepository.save(sampleUserDtl);
 			
 			theSampleUser.setSampleUserDtl(theSampleUserDtl);
@@ -62,13 +62,13 @@ public class SampleService {
 			resultMap.put("sampleUser", sampleUser);
 			
 		} catch (Exception e) {
-			throw new CustomException(CustomExceptionCode.ERR501, new String[] { e.getMessage() });
+			throw new CustomException(CustomExceptionCode.ERR521, new String[] { "샘플유저" });
 		}
 		
 		return resultMap;
 	}
 	
-	public CustomMap getSampleUserInfo(CustomMap params) throws CustomException {
+	public CustomMap getSampleUserInfo(CustomMap params) {
 		BooleanBuilder booleanBuilder = null;
 		CustomMap resultMap = new CustomMap();
 		try {
@@ -95,7 +95,86 @@ public class SampleService {
 			resultMap.put("sampleUser", sampleUser);
 
 		} catch (Exception e) {
-			throw new CustomException(CustomExceptionCode.ERR501, new String[] { e.getMessage() });
+			throw new CustomException(CustomExceptionCode.ERR511, new String[] { "샘플유저" });
+		}
+		return resultMap;
+	}
+	
+	@Transactional
+	public CustomMap updateSampleUserInfo(CustomMap params) {
+		BooleanBuilder booleanBuilder = null;
+		CustomMap resultMap = new CustomMap();
+		try {
+			QSampleUser qSampleUser = QSampleUser.sampleUser;
+			
+			SampleUser sampleUser = queryFactory.select(qSampleUser)
+				.from(qSampleUser)
+				.where(qSampleUser.sampleUserSno.eq(params.getLong("sampleUserSno")))
+				.fetchOne();
+			
+			sampleUser.setSampleUserName(params.getString("sampleUserName"));
+			sampleUser.setSampleUserEmail(params.getString("sampleUserEmail"));
+			sampleUser.setSampleUserAge(params.getString("sampleUserAge"));
+			sampleUser.setSysActor(params.getString("sysActor"));
+			
+			sampleUserRepository.save(sampleUser);
+			
+			QSampleUserDtl qSampleUserDtl = QSampleUserDtl.sampleUserDtl;
+			
+			booleanBuilder = new BooleanBuilder(qSampleUserDtl.sampleUserSno.eq(params.getLong("sampleUserSno")));
+			
+			if (!StringUtils.isNVL(params.getString("sampleUserDtlSno"))) {
+				booleanBuilder.and(qSampleUserDtl.sampleUserDtlSno.eq(params.getLong("sampleUserDtlSno")));
+			}
+			
+			SampleUserDtl sampleUserDtl = queryFactory.select(qSampleUserDtl)
+					.from(qSampleUserDtl)
+					.where(booleanBuilder)
+					.fetchOne();
+			
+			sampleUserDtl.setSampleUserBaseAddr(params.getString("sampleUserBaseAddr"));
+			sampleUserDtl.setSampleUserDtlAddr(params.getString("sampleUserDtlAddr"));
+			sampleUserDtl.setSysActor(params.getString("sysActor"));
+			
+			sampleUserDtlRepository.save(sampleUserDtl);
+			
+			sampleUser.setSampleUserDtl(sampleUserDtl);
+			
+			resultMap.put("sampleUser", sampleUser);
+
+		} catch (Exception e) {
+			throw new CustomException(CustomExceptionCode.ERR531, new String[] { "샘플유저" });
+		}
+		return resultMap;
+	}
+	
+	@Transactional
+	public CustomMap deleteSampleUserInfo(CustomMap params) {
+		BooleanBuilder booleanBuilder = null;
+		CustomMap resultMap = new CustomMap();
+		long cnt = 0;
+		try {
+			QSampleUser qSampleUser = QSampleUser.sampleUser;
+			
+			cnt += queryFactory.delete(qSampleUser)
+					.where(qSampleUser.sampleUserSno.eq(params.getLong("sampleUserSno")))
+					.execute();
+			
+			QSampleUserDtl qSampleUserDtl = QSampleUserDtl.sampleUserDtl;
+			
+			booleanBuilder = new BooleanBuilder(qSampleUserDtl.sampleUserSno.eq(params.getLong("sampleUserSno")));
+			if (!StringUtils.isNVL(params.getString("sampleUserDtlSno"))) {
+				booleanBuilder.and(qSampleUserDtl.sampleUserDtlSno.eq(params.getLong("sampleUserDtlSno")));
+			}
+			
+			cnt += queryFactory.delete(qSampleUserDtl)
+					.where(booleanBuilder)
+					.execute();
+			
+			resultMap.put("cnt", cnt);
+
+		} catch (Exception e) {
+			throw new CustomException(CustomExceptionCode.ERR541, new String[] { "샘플유저" });
 		}
 		return resultMap;
 	}

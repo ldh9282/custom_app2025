@@ -57,6 +57,46 @@ public class MapUtils {
     
     /**
      * <pre>
+     * 메서드명: objectToMap2
+	 * 설명: 객체를 맵으로 변환 (상속 필드도 같이)
+     * </pre>
+     * @param obj
+     * @return
+     */
+    public static Map<String, Object> objectToMap2(Object obj) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        Class<?> theClass = obj.getClass();
+
+        Field[] fields = theClass.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(obj);
+                map.put(field.getName(), value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+            	e.printStackTrace();
+			}
+        }
+        
+        Field[] superfields = theClass.getSuperclass().getDeclaredFields();
+        for (Field field : superfields) {
+        	field.setAccessible(true);
+        	try {
+        		Object value = field.get(obj);
+        		map.put(field.getName(), value);
+        	} catch (IllegalAccessException e) {
+        		e.printStackTrace();
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+        }
+        return map;
+    }
+    
+    /**
+     * <pre>
      * 메서드명: paramsValidation
 	 * 설명: 파라미터 유효성 검사
      * </pre>
