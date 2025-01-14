@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.custom.app2025.sample.service.SampleService;
-import com.custom.app2025.shared.exception.CustomException;
 import com.custom.app2025.shared.model.CustomMap;
 import com.custom.app2025.shared.utils.MapUtils;
 import com.custom.app2025.shared.web.CustomController;
@@ -102,4 +101,5 @@ public class SampleController extends CustomController {
 		
 		return getResponse(resultMap);
 	}
+	
 }
