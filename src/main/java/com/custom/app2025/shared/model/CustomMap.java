@@ -32,55 +32,94 @@ public class CustomMap extends LinkedHashMap<String, Object> {
         }
 	}
 	
-	public static CustomMap builder() {
-		CustomMap result = new CustomMap();
-		return result;
+	public static class Builder {
+		private final CustomMap instance;
+		
+		private Builder() {
+			this.instance = new CustomMap();
+		}
+		
+		private Builder(Map<String, Object> map) {
+			this.instance = new CustomMap(map);
+		}
+		
+		public Builder put(String key, Object value) {
+			this.instance.put(key, value);
+			return this;
+		}
+		public Builder set(String key, String value) {
+			this.instance.put(key, value);
+			return this;
+		}
+		public Builder set(String key, int value) {
+			this.instance.put(key, Integer.valueOf(value));
+			return this;
+		}
+		public Builder set(String key, long value) {
+			this.instance.put(key, Long.valueOf(value));
+			return this;
+		}
+		public Builder set(String key, float value) {
+			this.instance.put(key, Float.valueOf(value));
+			return this;
+		}
+		public Builder set(String key, double value) {
+			this.instance.put(key, Double.valueOf(value));
+			return this;
+		}
+		public Builder set(String key, boolean value) {
+			this.instance.put(key, Boolean.valueOf(value));
+			return this;
+		}
+		public Builder set(String key, Object value) {
+			this.instance.put(key, value);
+			return this;
+		}
+		
+		public CustomMap build() {
+			return this.instance;
+		}
+		
 	}
 	
-	public static CustomMap builder(Map<String, Object> map) {
-		CustomMap result = new CustomMap(map);
-		return result;
+	public static Builder builder() {
+		Builder builder = new Builder();
+		return builder;
 	}
 	
-	public CustomMap build() {
-		return this;
+	public static Builder builder(Map<String, Object> map) {
+		Builder builder = new Builder(map);
+		return builder;
 	}
 	
 	@Override
 	public Object put(String key, Object value) {
 		if (key != null && key.contains("_")) {
-	        key = snake2Camel(key);
+	        key = snakeToCamel(key);
 	    }
 	    return super.put(key, value);
 	}
 	
-	public CustomMap set(String key, String value) {
+	public void set(String key, String value) {
 		put(key, value);
-		return this;
 	}
-	public CustomMap set(String key, int value) {
+	public void set(String key, int value) {
 		put(key, Integer.valueOf(value));
-		return this;
 	}
-	public CustomMap set(String key, long value) {
+	public void set(String key, long value) {
 		put(key, Long.valueOf(value));
-		return this;
 	}
-	public CustomMap set(String key, float value) {
+	public void set(String key, float value) {
 		put(key, Float.valueOf(value));
-		return this;
 	}
-	public CustomMap set(String key, double value) {
+	public void set(String key, double value) {
 		put(key, Double.valueOf(value));
-		return this;
 	}
-	public CustomMap set(String key, boolean value) {
+	public void set(String key, boolean value) {
 		put(key, Boolean.valueOf(value));
-		return this;
 	}
-	public CustomMap set(String key, Object value) {
+	public void set(String key, Object value) {
 		put(key, value);
-		return this;
 	}
 	
 	public String getString(String key) {
@@ -490,7 +529,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 	                if (item instanceof CustomMap) {
 	                    newList.add(((CustomMap) item).toHashMap());
 	                } else if (item instanceof List<?>) {
-	                    newList.add(convertListToHashMap((List<?>) item));
+	                    newList.add(convertListToHashMapList((List<?>) item));
 	                } else {
 	                    newList.add(item);
 	                }
@@ -503,13 +542,13 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 	    return hashMap;
 	}
 	
-    private List<Object> convertListToHashMap(List<?> list) {
+    private List<Object> convertListToHashMapList(List<?> list) {
         List<Object> newList = new ArrayList<>();
         for (Object item : list) {
             if (item instanceof CustomMap) {
                 newList.add(((CustomMap) item).toHashMap());
             } else if (item instanceof List<?>) {
-                newList.add(convertListToHashMap((List<?>) item));
+                newList.add(convertListToHashMapList((List<?>) item));
             } else {
                 newList.add(item);
             }
@@ -602,7 +641,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
         }
     }
     
-    private static String snake2Camel(String input) {
+    private static String snakeToCamel(String input) {
         if (input == null || input.isEmpty()) return input;
 
         StringBuilder result = new StringBuilder();
@@ -627,7 +666,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
     /**
      * <pre>
      * 메서드명: objectToCustomMap
-	 * 설명: 객체를 맵으로 변환 (상속 필드도 같이)
+	 * 설명: 객체를 맵으로 변환
      * </pre>
      * @param obj 객체
      * @param ignoredKeys 생략필드

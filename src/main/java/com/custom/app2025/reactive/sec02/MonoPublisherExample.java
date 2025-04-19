@@ -16,13 +16,18 @@ import reactor.core.publisher.Mono;
 public class MonoPublisherExample {
 
 	public static void main(String[] args) {
+		// 테스트 데이터
+		CustomMap result = CustomMap.builder()
+				.put("value", Math.random())
+				.build();
+		
 		// Mono.just 정확히 1개 emit (onSubscribe -> onNext 1회 -> onComplete)
-		Mono<CustomMap> monoPublisher = Mono.just(CustomMap.builder().set("value", Math.random()).build());
+		Mono<CustomMap> monoPublisher = Mono.just(result);
 		boolean isEmpty = false;
 		if (isEmpty) { // 필요시 0개 emit 으로 중간에 로직 변경도 가능 (onSubscribe -> onComplete)
 			monoPublisher = Mono.empty();
 		}
-		CustomSubscriber subscriber = new CustomSubscriber();
+		CustomSubscriber subscriber = new CustomSubscriber(); // 구독자
 		
 		monoPublisher.subscribe(subscriber);
 		
