@@ -7,8 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.jdbc.support.JdbcUtils;
-
 /**
  * <pre>
  * 클래스명: CustomMap
@@ -51,7 +49,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 	@Override
 	public Object put(String key, Object value) {
 		if (key != null && key.contains("_")) {
-	        key = JdbcUtils.convertUnderscoreNameToPropertyName(key);
+	        key = snake2Camel(key);
 	    }
 	    return super.put(key, value);
 	}
@@ -519,7 +517,6 @@ public class CustomMap extends LinkedHashMap<String, Object> {
         return newList;
     }
     
-    
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -603,6 +600,28 @@ public class CustomMap extends LinkedHashMap<String, Object> {
             }
             return sb.toString();
         }
+    }
+    
+    private static String snake2Camel(String input) {
+        if (input == null || input.isEmpty()) return input;
+
+        StringBuilder result = new StringBuilder();
+        boolean nextIsUpper = false;
+
+        for (char c : input.toCharArray()) {
+            if (c == '_') {
+                nextIsUpper = true;
+            } else {
+                if (nextIsUpper) {
+                    result.append(Character.toUpperCase(c));
+                    nextIsUpper = false;
+                } else {
+                    result.append(Character.toLowerCase(c));
+                }
+            }
+        }
+
+        return result.toString();
     }
     
     /**
@@ -734,5 +753,6 @@ public class CustomMap extends LinkedHashMap<String, Object> {
     public static String objectToString(Object obj, String[] ignoreKeys, boolean isSuperContained) {
     	return objectToCustomMap(obj, ignoreKeys, isSuperContained).toString().replace("CustomMap", obj.getClass().getSimpleName());
     }
+    
     
 }

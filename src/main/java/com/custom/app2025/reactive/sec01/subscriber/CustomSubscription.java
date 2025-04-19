@@ -1,4 +1,4 @@
-package com.custom.app2025.reactive.sec01.publisher;
+package com.custom.app2025.reactive.sec01.subscriber;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
