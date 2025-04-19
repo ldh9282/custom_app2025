@@ -1,5 +1,6 @@
 package com.custom.app2025.shared.model;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,6 +34,20 @@ public class CustomMap extends LinkedHashMap<String, Object> {
         }
 	}
 	
+	public static CustomMap builder() {
+		CustomMap result = new CustomMap();
+		return result;
+	}
+	
+	public static CustomMap builder(Map<String, Object> map) {
+		CustomMap result = new CustomMap(map);
+		return result;
+	}
+	
+	public CustomMap build() {
+		return this;
+	}
+	
 	@Override
 	public Object put(String key, Object value) {
 		if (key != null && key.contains("_")) {
@@ -41,26 +56,33 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 	    return super.put(key, value);
 	}
 	
-	public void set(String key, String value) {
+	public CustomMap set(String key, String value) {
 		put(key, value);
+		return this;
 	}
-	public void set(String key, int value) {
+	public CustomMap set(String key, int value) {
 		put(key, Integer.valueOf(value));
+		return this;
 	}
-	public void set(String key, long value) {
+	public CustomMap set(String key, long value) {
 		put(key, Long.valueOf(value));
+		return this;
 	}
-	public void set(String key, float value) {
+	public CustomMap set(String key, float value) {
 		put(key, Float.valueOf(value));
+		return this;
 	}
-	public void set(String key, double value) {
+	public CustomMap set(String key, double value) {
 		put(key, Double.valueOf(value));
+		return this;
 	}
-	public void set(String key, boolean value) {
+	public CustomMap set(String key, boolean value) {
 		put(key, Boolean.valueOf(value));
+		return this;
 	}
-	public void set(String key, Object value) {
+	public CustomMap set(String key, Object value) {
 		put(key, value);
+		return this;
 	}
 	
 	public String getString(String key) {
@@ -581,6 +603,136 @@ public class CustomMap extends LinkedHashMap<String, Object> {
             }
             return sb.toString();
         }
+    }
+    
+    /**
+     * <pre>
+     * 메서드명: objectToCustomMap
+	 * 설명: 객체를 맵으로 변환 (상속 필드도 같이)
+     * </pre>
+     * @param obj 객체
+     * @param ignoredKeys 생략필드
+     * @return
+     */
+    public static CustomMap objectToCustomMap(Object obj, String[] ignoredKeys) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        Class<?> theClass = obj.getClass();
+
+        Field[] fields = theClass.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(obj);
+                boolean isSkipped = false;
+                if (ignoredKeys != null) {
+                	for (String ignoredKey : ignoredKeys) {
+                		if (field.getName().equals(ignoredKey)) {
+                			isSkipped = true;
+                		}
+                	}
+                }
+                if (!isSkipped) {
+                	map.put(field.getName(), value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+            	e.printStackTrace();
+			}
+        }
+        return new CustomMap(map);
+    }
+    
+    /**
+     * <pre>
+     * 메서드명: objectToCustomMap
+	 * 설명: 객체를 맵으로 변환 (상속 필드도 같이)
+     * </pre>
+     * @param obj 객체
+     * @param ignoredKeys 생략필드
+     * @param isSuperContained 상속필드 포함여부
+     * @return
+     */
+    public static CustomMap objectToCustomMap(Object obj, String[] ignoredKeys, boolean isSuperContained) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        Class<?> theClass = obj.getClass();
+
+        Field[] fields = theClass.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(obj);
+                boolean isSkipped = false;
+                if (ignoredKeys != null) {
+                	for (String ignoredKey : ignoredKeys) {
+                		if (field.getName().equals(ignoredKey)) {
+                			isSkipped = true;
+                		}
+                	}
+                }
+                if (!isSkipped) {
+                	map.put(field.getName(), value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+            	e.printStackTrace();
+			}
+        }
+        
+        if (isSuperContained) {
+        	
+        	Field[] superfields = theClass.getSuperclass().getDeclaredFields();
+        	for (Field field : superfields) {
+        		field.setAccessible(true);
+        		try {
+        			Object value = field.get(obj);
+        			boolean isSkipped = false;
+                    if (ignoredKeys != null) {
+                    	for (String ignoredKey : ignoredKeys) {
+                    		if (field.getName().equals(ignoredKey)) {
+                    			isSkipped = true;
+                    		}
+                    	}
+                    }
+                    if (!isSkipped) {
+                    	map.put(field.getName(), value);
+                    }
+        		} catch (IllegalAccessException e) {
+        			e.printStackTrace();
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        		}
+        	}
+        }
+        return new CustomMap(map);
+    }
+    
+    /**
+     * <pre>
+     * 메서드명: objectToString
+	 * 설명: 객체를 ToString 로 변환
+     * </pre>
+     * @param obj 객체
+     * @param ignoredKeys 생략필드
+     * @return
+     */
+    public static String objectToString(Object obj, String[] ignoreKeys) {
+    	return objectToCustomMap(obj, ignoreKeys).toString().replace("CustomMap", obj.getClass().getSimpleName());
+    }
+    
+    /**
+     * <pre>
+     * 메서드명: objectToString
+	 * 설명: 객체를 ToString 로 변환
+     * </pre>
+     * @param obj 객체
+     * @param ignoredKeys 생략필드
+     * @param isSuperContained 상속필드 포함여부
+     * @return
+     */
+    public static String objectToString(Object obj, String[] ignoreKeys, boolean isSuperContained) {
+    	return objectToCustomMap(obj, ignoreKeys, isSuperContained).toString().replace("CustomMap", obj.getClass().getSimpleName());
     }
     
 }

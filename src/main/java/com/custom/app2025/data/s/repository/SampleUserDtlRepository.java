@@ -1,9 +1,9 @@
-package com.custom.app2025.sample.service;
+package com.custom.app2025.data.s.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.custom.app2025.sample.entity.SampleUser;
-import com.custom.app2025.sample.entity.SampleUserDtl;
+import com.custom.app2025.data.s.entity.SampleUser;
+import com.custom.app2025.data.s.entity.SampleUserDtl;
 
 public interface SampleUserDtlRepository extends JpaRepository<SampleUserDtl, Long> {
 

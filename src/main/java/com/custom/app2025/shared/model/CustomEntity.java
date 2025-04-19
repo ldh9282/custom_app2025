@@ -27,10 +27,10 @@ public abstract class CustomEntity {
 	@Transient
 	private String sysActor;
 	
-	@Column(name = "시스템생성자", nullable = true, updatable = false)
+	@Column(name = "시스템생성자", nullable = false, updatable = false)
 	private String sysCreator;
 	
-	@Column(name = "시스템수정자", nullable = true)
+	@Column(name = "시스템수정자", nullable = false)
 	private String sysModifier;
 	
 	@Column(name = "시스템생성일", nullable = false, updatable = false)

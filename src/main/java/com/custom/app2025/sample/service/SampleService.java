@@ -3,10 +3,12 @@ package com.custom.app2025.sample.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.custom.app2025.sample.entity.QSampleUser;
-import com.custom.app2025.sample.entity.QSampleUserDtl;
-import com.custom.app2025.sample.entity.SampleUser;
-import com.custom.app2025.sample.entity.SampleUserDtl;
+import com.custom.app2025.data.s.entity.QSampleUser;
+import com.custom.app2025.data.s.entity.QSampleUserDtl;
+import com.custom.app2025.data.s.entity.SampleUser;
+import com.custom.app2025.data.s.entity.SampleUserDtl;
+import com.custom.app2025.data.s.repository.SampleUserDtlRepository;
+import com.custom.app2025.data.s.repository.SampleUserRepository;
 import com.custom.app2025.shared.exception.CustomException;
 import com.custom.app2025.shared.exception.CustomExceptionCode;
 import com.custom.app2025.shared.model.CustomMap;

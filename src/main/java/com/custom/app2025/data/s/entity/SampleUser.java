@@ -1,4 +1,4 @@
-package com.custom.app2025.sample.entity;
+package com.custom.app2025.data.s.entity;
 
 import com.custom.app2025.shared.converter.CustomConverterS2I;
 import com.custom.app2025.shared.model.CustomEntity;
