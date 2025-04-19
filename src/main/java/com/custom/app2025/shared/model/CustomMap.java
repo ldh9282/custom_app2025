@@ -775,8 +775,8 @@ public class CustomMap extends LinkedHashMap<String, Object> {
      * @param ignoredKeys 생략필드
      * @return
      */
-    public static String objectToString(Object obj, String[] ignoreKeys) {
-    	return objectToCustomMap(obj, ignoreKeys).toString().replace("CustomMap", obj.getClass().getSimpleName());
+    public static String objectToString(Object obj, String[] ignoredKeys) {
+    	return objectToCustomMap(obj, ignoredKeys).toString().replace("CustomMap", obj.getClass().getSimpleName());
     }
     
     /**
@@ -789,8 +789,8 @@ public class CustomMap extends LinkedHashMap<String, Object> {
      * @param isSuperContained 상속필드 포함여부
      * @return
      */
-    public static String objectToString(Object obj, String[] ignoreKeys, boolean isSuperContained) {
-    	return objectToCustomMap(obj, ignoreKeys, isSuperContained).toString().replace("CustomMap", obj.getClass().getSimpleName());
+    public static String objectToString(Object obj, String[] ignoredKeys, boolean isSuperContained) {
+    	return objectToCustomMap(obj, ignoredKeys, isSuperContained).toString().replace("CustomMap", obj.getClass().getSimpleName());
     }
     
     
