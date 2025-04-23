@@ -1,5 +1,7 @@
 package com.custom.app2025.reactive.sec01.subscriber;
 
+import java.util.function.Supplier;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -17,49 +19,45 @@ import lombok.extern.log4j.Log4j2;
 public class CustomSubscription implements Subscription {
 
 	private Subscriber<? super CustomMap> subscriber;
+	private Supplier<CustomMap> data;
+	
 	private boolean isCancelled;
 	
-	private static final int MAX_ITEMS = 10;
-	private int count;
+	private int count = 0;
+	private static final int MAX_COUNT = 10;
 	
-	public void setSubscriber(Subscriber<? super CustomMap> subscriber) {
+	public CustomSubscription(Subscriber<? super CustomMap> subscriber, Supplier<CustomMap> data) {
 		this.subscriber = subscriber;
-		this.count = 0;
+		this.data = data;
 	}
-
+	
 	@Override
 	public void request(long n) {
+		log.debug("CustomSubscription ::: request ::: " + n);
 		if (isCancelled) {
-			if (log.isDebugEnabled()) { log.debug("CustomSubscription :::  request ::: isCancelled ::: " + isCancelled); }
+			log.debug("CustomSubscription ::: request ::: isCancelled ::: " + isCancelled);
 			return;
 		}
-		if (log.isDebugEnabled()) { log.debug("CustomSubscription :::  request ::: " + n); }
 		
-		for (int i = 0; i < n && count < MAX_ITEMS; i++) {
-			count++;
-			CustomMap params = new CustomMap();
-			params.put("count", count);
+		for (int i = 0; i < n; i++) {
+			if (count >= MAX_COUNT) {
+				isCancelled = true;
+				subscriber.onComplete();
+				return;
+			}
 			
-			subscriber.onNext(params);
+			CustomMap item = this.data.get();
+			item.put("count", ++count);
+			subscriber.onNext(item);
 		}
 		
-		if (count == MAX_ITEMS) {
-			if (log.isDebugEnabled()) { log.debug("count :::  MAX_ITEMS ::: " + count); }
-			subscriber.onComplete();
-			isCancelled = true;
-			return;
-		}
+		
 	}
 
 	@Override
 	public void cancel() {
 		isCancelled = true;
-		if (log.isDebugEnabled()) { log.debug("CustomSubscription :::  isCancelled ::: " + isCancelled); }
-	}
-	
-	@Override
-	public String toString() {
-		return CustomMap.objectToString(this, new String[] { "log", "subscriber" });
+		log.debug("CustomSubscription ::: isCancelled ::: " + isCancelled);
 	}
 	
 

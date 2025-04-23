@@ -14,26 +14,26 @@ import jakarta.persistence.Transient;
 
 /**
  * <pre>
- * 클래스명: CustomEntity
+ * 클래스명: CustomEntity2
  * 설명: 공통처리를 위해 상속한다
  * </pre>
  */
 @MappedSuperclass
-public abstract class CustomEntity {
+public abstract class CustomEntity2 {
 	
 	@Transient
 	private String sysActor;
 	
-	@Column(name = "시스템생성자", nullable = false, updatable = false)
+	@Column(name = "sysCreator", nullable = false, updatable = false)
 	private String sysCreator;
 	
-	@Column(name = "시스템수정자", nullable = false)
+	@Column(name = "sysModifier", nullable = false)
 	private String sysModifier;
 	
-	@Column(name = "시스템생성일", nullable = false, updatable = false)
+	@Column(name = "sysCreatedAt", nullable = false, updatable = false)
     private LocalDateTime sysCreatedAt;
 
-    @Column(name = "시스템수정일", nullable = false)
+    @Column(name = "sysModifiedAt", nullable = false)
     private LocalDateTime sysModifiedAt;
     
 

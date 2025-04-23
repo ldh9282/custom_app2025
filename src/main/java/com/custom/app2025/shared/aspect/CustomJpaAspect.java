@@ -18,12 +18,17 @@ import lombok.extern.log4j.Log4j2;
 public class CustomJpaAspect {
 
 	@Before("execution(* org.springframework.data.jpa.repository.JpaRepository+.*(..))"
-			+ " or " + "execution(* com.querydsl.jpa.impl.JPAQueryFactory.*(..))"
-			)
-    public void logBefore(JoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
-        for (Object arg : args) {
-        	if (log.isDebugEnabled()) { log.debug("바인딩 파라미터 : " + arg); }
-        }
-    }
+		+ " || execution(* com.querydsl.jpa.impl.JPAQueryFactory.*(..))")
+	public void logBefore(JoinPoint joinPoint) {
+	    String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
+	    String methodName = joinPoint.getSignature().getName();
+
+	    if (log.isDebugEnabled()) {
+	        log.debug("JPA 호출 위치: {}.{}", className, methodName);
+	        Object[] args = joinPoint.getArgs();
+	        for (Object arg : args) {
+	            log.debug("바인딩 파라미터: {}", arg);
+	        }
+	    }
+	}
 }

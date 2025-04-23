@@ -1,4 +1,4 @@
-package com.custom.app2025.data.s.entity;
+package com.custom.app2025.sample.entity;
 
 import com.custom.app2025.shared.converter.CustomConverterS2I;
 import com.custom.app2025.shared.model.CustomEntity;
@@ -16,16 +16,18 @@ import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity @Builder
+@Entity
 @Table(schema = "APP2025", name = "SAMPLE_USER")
 @SequenceGenerator(
-	    name = "SAMPLE_USER_SNO", // 시퀀스 생성기의 이름
-	    sequenceName = "APP2025.SAMPLE_USER_SEQ", // 실제 데이터베이스 시퀀스 이름
-	    allocationSize = 1 // 시퀀스 증가 크기
-	)
-@Getter @Setter @AllArgsConstructor
+    name = "SAMPLE_USER_SNO", // 시퀀스 생성기의 이름
+    sequenceName = "APP2025.SAMPLE_USER_SEQ", // 실제 데이터베이스 시퀀스 이름
+    allocationSize = 1 // 시퀀스 증가 크기
+)
+@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor 
 public class SampleUser extends CustomEntity {
 
 
@@ -47,10 +49,6 @@ public class SampleUser extends CustomEntity {
 	@Transient
 	private SampleUserDtl sampleUserDtl;
 	
-	public SampleUser() {
-		
-	}
-
 	/**
 	 * <pre>
 	 * 메서드명: setSampleUserName

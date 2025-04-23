@@ -8,9 +8,7 @@ import reactor.core.publisher.Mono;
 /**
  * <pre>
  * 클래스명: MonoPublisherExample
- * 설명: 퍼블리셔 중 하나인 모노의 예제
- * 
- * 모노는 0개 도는 1개를 emit 을 하는 퍼블리셔
+ * 설명: 퍼블리셔 중 하나인 모노의 예제 (모노는 0개 도는 1개를 emit 을 하는 퍼블리셔)
  * </pre>
  */
 public class MonoPublisherExample {
@@ -34,5 +32,6 @@ public class MonoPublisherExample {
 		// 10 번 실행해도 monoPublisher는 onNext 한번만 실행 (2개 이상 emit 불가능)
 		// Mono.empty 로 변경되었을경우 emit 0개, onNext 실행하지 않음
 		subscriber.getSubscription().request(10);
+		
 	}
 }

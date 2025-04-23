@@ -1,4 +1,4 @@
-package com.custom.app2025.reactive.sec02;
+package com.custom.app2025.etc;
 
 import com.custom.app2025.shared.model.CustomMap;
 

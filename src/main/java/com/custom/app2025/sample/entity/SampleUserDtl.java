@@ -1,4 +1,4 @@
-package com.custom.app2025.data.s.entity;
+package com.custom.app2025.sample.entity;
 
 import com.custom.app2025.shared.model.CustomEntity;
 import com.custom.app2025.shared.utils.StringUtils;
@@ -13,16 +13,18 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity @Builder
+@Entity
 @Table(schema = "APP2025", name = "SAMPLE_USER_DTL")
 @SequenceGenerator(
-	    name = "SAMPLE_USER_DTL_SNO", // 시퀀스 생성기의 이름
-	    sequenceName = "APP2025.SAMPLE_USER_DTL_SEQ", // 실제 데이터베이스 시퀀스 이름
-	    allocationSize = 1 // 시퀀스 증가 크기
-	)
-@Getter @Setter @AllArgsConstructor
+    name = "SAMPLE_USER_DTL_SNO", // 시퀀스 생성기의 이름
+    sequenceName = "APP2025.SAMPLE_USER_DTL_SEQ", // 실제 데이터베이스 시퀀스 이름
+    allocationSize = 1 // 시퀀스 증가 크기
+)
+@Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class SampleUserDtl extends CustomEntity {
 
 	@Column(name = "SAMPLE_USER_SNO")
@@ -40,10 +42,6 @@ public class SampleUserDtl extends CustomEntity {
 	@Column(name = "SAMPLE_USER_DTL_ADDR")
 	private String sampleUserDtlAddr;
 	
-	public SampleUserDtl() {
-	
-	}
-
 	public void setSampleUserSno(Long sampleUserSno) {
 		if (sampleUserSno > 0) {
 			this.sampleUserSno = sampleUserSno;
@@ -71,7 +69,7 @@ public class SampleUserDtl extends CustomEntity {
 	 * @param sampleUserDtlAddr
 	 */
 	public void setSampleUserDtlAddr(String sampleUserDtlAddr) {
-		if (StringUtils.isNVL(sampleUserDtlAddr)) {
+		if (!StringUtils.isNVL(sampleUserDtlAddr)) {
 			this.sampleUserDtlAddr = sampleUserDtlAddr;
 		}
 	}

@@ -152,6 +152,9 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		} else if (object instanceof CustomEntity) {
 			CustomMap customMap = ((CustomEntity) object).toCustomMap();
 			value = object.getClass().getSimpleName() + " " + customMap.toHashMap().toString();
+		} else if (object instanceof CustomEntity2) {
+			CustomMap customMap = ((CustomEntity2) object).toCustomMap();
+			value = object.getClass().getSimpleName() + " " + customMap.toHashMap().toString();
 		} else {
 			value = object.toString();
 		}

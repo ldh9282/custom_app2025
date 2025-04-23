@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Sample">
+	
+	<select id="selectSampleUserInfo" parameterType="CustomMap" resultType="CustomMap">
+		SELECT /* Sample.selectSampleUserInfo */
+			A.SAMPLE_USER_SNO
+			, B.SAMPLE_USER_DTL_SNO
+			, A.SAMPLE_USER_NAME
+			, A.SAMPLE_USER_EMAIL
+			, A.SAMPLE_USER_AGE
+			, B.SAMPLE_USER_BASE_ADDR
+			, B.SAMPLE_USER_DTL_ADDR
+			, A.시스템생성자 AS SYS_CREATOR
+			, A.시스템수정자 AS SYS_MODIFIER
+			, TO_CHAR(A.시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT
+			, TO_CHAR(A.시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT
+		FROM
+			APP2025.SAMPLE_USER A
+			, APP2025.SAMPLE_USER_DTL B
+		WHERE
+			A.SAMPLE_USER_SNO = B.SAMPLE_USER_SNO
+			AND A.SAMPLE_USER_SNO = #{sampleUserSno} :: BIGINT
+			AND B.SAMPLE_USER_DTL_SNO = #{sampleUserDtlSno} :: BIGINT 
+	</select>
+	
+	
+</mapper>

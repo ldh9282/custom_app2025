@@ -24,27 +24,23 @@ public class CustomSubscriber implements Subscriber<CustomMap> {
 
 	@Override
 	public void onSubscribe(Subscription subscription) {
-		if (log.isDebugEnabled()) { log.debug("subscription ::: onSubscribe ::: " + subscription); }
+		log.debug("subscription ::: onSubscribe ::: " + subscription);
 		this.subscription = subscription;
 	}
 
 	@Override
-	public void onNext(CustomMap params) {
-		if (log.isDebugEnabled()) { log.debug("params ::: " + params); }
+	public void onNext(CustomMap item) {
+		log.debug("item ::: " + item);
 	}
 
 	@Override
 	public void onError(Throwable throwable) {
-		if (log.isDebugEnabled()) { log.debug("throwable ::: " + throwable); }
+		log.debug("throwable ::: " + throwable);
 	}
 
 	@Override
 	public void onComplete() {
-		if (log.isDebugEnabled()) { log.debug("subscription ::: onComplete ::: " + subscription); }
+		log.debug("subscription ::: onComplete ::: " + subscription);
 	}
 
-	@Override
-	public String toString() {
-		return CustomMap.objectToString(this, new String[] { "log", "subscription" });
-	}
 }
